@@ -1,3 +1,5 @@
+
+
 import time
 import pandas as pd
 
@@ -7,16 +9,20 @@ CITY_DATA = { 'chicago': 'chicago.csv',
 
 
 def display_raw_data(df):
-    """ Display raw data of the dataframe , 5 rows at a time """
-    row_index=0 
-    while True : 
+    """
+    Displays 5 rows of raw data at a time upon user request.
+
+    Args:
+        df (DataFrame): The dataframe containing bikeshare data.
+    """
+    row_index = 0
+    while True:
         keep_displaying = input("Do you want to display 5 rows of raw data? Enter yes or no: ").lower()
         if keep_displaying == 'yes':
             print(df.iloc[row_index:row_index+5])
             row_index += 5
         else:
-            break
-    
+            break  
 
 
 def get_filters():
@@ -29,7 +35,7 @@ def get_filters():
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
     print('Hello! Let\'s explore some US bikeshare data!')
-    # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
+    # get user input for city (chicago, new york city, washington).
     while True:
         city = input("Enter the city name: ").lower()
         if city in CITY_DATA:
@@ -99,7 +105,13 @@ def load_data(city, month, day):
 
 
 def time_stats(df):
-    """Displays statistics on the most frequent times of travel."""
+    """
+    Displays statistics on the most frequent times of travel.
+    Args:
+        df (pandas.DataFrame): The data frame containing bikeshare data with columns 'month', 'day_of_week', and 'Start Time'.
+    Prints:
+        The most common month, day of the week, and start hour for the trips in the data frame.
+    """
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
@@ -124,13 +136,21 @@ def time_stats(df):
 
 
 def station_stats(df):
-    """Displays statistics on the most popular stations and trip."""
+    """
+    Displays statistics on the most popular stations and trip.
+
+    Args:
+        df (pandas.DataFrame): The data frame containing bikeshare data with columns 'Start Station' and 'End Station'.
+    
+    Prints:
+        The most common start station, end station, and the most frequent combination of start and end stations.
+    """
 
     print('\nCalculating The Most Popular Stations and Trip...\n')
     start_time = time.time()
 
     # display most commonly used start station
-    common_start =  df['Start Station'].mode()[0]
+    common_start = df['Start Station'].mode()[0]
     print('Most Common Start Station:', common_start)
 
     # display most commonly used end station
@@ -138,7 +158,6 @@ def station_stats(df):
     print('Most Common End Station:', common_end)
 
     # display most frequent combination of start station and end station trip
-    # this adds a new column to the dataframe that concatenates the start and end stations , another way is to use groupby
     df['Start End'] = df['Start Station'] + ' to ' + df['End Station']
     common_start_end = df['Start End'].mode()[0]
     print('Most Common Start-End Station:', common_start_end)
@@ -235,6 +254,7 @@ def main():
     except KeyboardInterrupt:
         print("\n\nProgram terminated by user")
         print ("Thank you for using the program")
+
 
 if __name__ == "__main__":
 	main()
