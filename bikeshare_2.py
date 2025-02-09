@@ -59,7 +59,7 @@ def get_filters():
     return city, month, day
 
 
-def load_data(city, month, day):
+def load_data(city:str, month:str, day:str):
     """
     Loads data for the specified city and filters by month and day if applicable.
 
@@ -165,7 +165,7 @@ def trip_duration_stats(df):
     print('-'*40)
 
 
-def user_stats(df , city):
+def user_stats(df , city:str):
     """Displays statistics on bikeshare users."""
 
     print('\nCalculating User Stats...\n')
