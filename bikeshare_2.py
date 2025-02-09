@@ -25,6 +25,35 @@ def display_raw_data(df):
             break  
 
 
+
+def get_city():
+    """Asks user to specify a city to analyze."""
+    while True:
+        city = input("Enter the city name: ").lower()
+        if city in CITY_DATA:
+            return city
+        else:
+            print("Invalid city name. Please enter a valid city name from chicago, new york city, washington")
+
+def get_month():
+    """Asks user to specify a month to analyze."""
+    while True:
+        month = input("Enter the month name: ").lower()
+        if month in ['all', 'january', 'february', 'march', 'april', 'may', 'june']:
+            return month
+        else:
+            print("Invalid month name. Please enter a valid month name from january to june or all")
+
+def get_day():
+    """Asks user to specify a day of the week to analyze."""
+    while True:
+        day = input("Enter the day name: ").lower()
+        if day in ['all', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']:
+            return day
+        else:
+            print("Invalid day name. Please enter a valid day name")
+    
+
 def get_filters():
     """
     Asks user to specify a city, month, and day to analyze.
@@ -35,6 +64,7 @@ def get_filters():
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
     print('Hello! Let\'s explore some US bikeshare data!')
+<<<<<<< HEAD
     # get user input for city (chicago, new york city, washington).
     while True:
         city = input("Enter the city name: ").lower()
@@ -61,11 +91,16 @@ def get_filters():
             print("Invalid day name. Please enter a valid day name")
 
 
+=======
+    city = get_city()
+    month = get_month()
+    day = get_day()
+>>>>>>> refactoring
     print('-'*40)
     return city, month, day
 
 
-def load_data(city, month, day):
+def load_data(city:str, month:str, day:str):
     """
     Loads data for the specified city and filters by month and day if applicable.
 
@@ -76,8 +111,20 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
-    df = pd.read_csv(CITY_DATA[city])
-    
+    try:
+        df = pd.read_csv(CITY_DATA[city])
+    except FileNotFoundError:
+        print(f"Error: The file for {city} does not exist.")
+        return None
+    except pd.errors.EmptyDataError:
+        print(f"Error: The file for {city} is empty.")
+        return None
+    except pd.errors.ParserError:
+        print(f"Error: The file for {city} is corrupted.")
+        return None
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return None
     # convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
     
@@ -184,7 +231,7 @@ def trip_duration_stats(df):
     print('-'*40)
 
 
-def user_stats(df , city):
+def user_stats(df , city:str):
     """Displays statistics on bikeshare users."""
 
     print('\nCalculating User Stats...\n')
@@ -220,6 +267,7 @@ def user_stats(df , city):
         
     else:
         print ("Unfortunately, Gender count not ablicable for Washington city")
+        
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
