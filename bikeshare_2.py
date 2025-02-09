@@ -76,8 +76,20 @@ def load_data(city:str, month:str, day:str):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
-    df = pd.read_csv(CITY_DATA[city])
-    
+    try:
+        df = pd.read_csv(CITY_DATA[city])
+    except FileNotFoundError:
+        print(f"Error: The file for {city} does not exist.")
+        return None
+    except pd.errors.EmptyDataError:
+        print(f"Error: The file for {city} is empty.")
+        return None
+    except pd.errors.ParserError:
+        print(f"Error: The file for {city} is corrupted.")
+        return None
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return None
     # convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
     
@@ -207,6 +219,7 @@ def user_stats(df , city:str):
         
     else:
         print ("Unfortunately, Gender count not ablicable for Washington city")
+        
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
